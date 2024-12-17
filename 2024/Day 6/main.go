@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"slices"
 )
 
 func main() {
@@ -23,8 +24,58 @@ func main() {
 		}
 
 	}
+	for _, pos := range positions {
+		if checkForLoop(pos) {
+			result2++
+		}
+	}
 	fmt.Println(countPositions(puzzle))
-	fmt.Println(result2) // 823 too low
+	fmt.Println(result2) //false
+}
+
+func checkForLoop(pos [2][2]int) bool {
+	moving := true
+	puzzle, position := readFile()
+	position = pos[0]
+	direction := pos[1]
+	if position[0]+direction[0] < 0 || position[0]+direction[0] >= len(puzzle) ||
+		position[1]+direction[1] < 0 || position[1]+direction[1] >= len(puzzle[0]) {
+		return false
+	}
+	puzzle[position[0]+direction[0]][position[1]+direction[1]] = "N"
+	positions := make([][2][2]int, 0)
+	positions = append(positions, [2][2]int{position, direction})
+	direction = changeDirection(pos[1])
+
+	positions = append(positions, [2][2]int{position, direction})
+
+	for moving {
+		position, direction = move(puzzle, position, direction)
+		tmpPos := [2][2]int{position, direction}
+
+		if slices.Contains(positions, tmpPos) {
+			return true
+		}
+		if !onMap(len(puzzle), len(puzzle[0]), position) {
+			moving = false
+		} else {
+			puzzle[position[0]][position[1]] = "X"
+			positions = append(positions, [2][2]int{position, direction})
+
+		}
+
+	}
+	return false
+}
+
+func printPuzzle(puzzle [][]string) {
+	for i := 0; i < len(puzzle); i++ {
+		for j := 0; j < len(puzzle); j++ {
+			fmt.Print(puzzle[i][j])
+		}
+		fmt.Print("\n")
+	}
+	fmt.Println()
 }
 
 func countPositions(puzzle [][]string) int {
@@ -49,7 +100,8 @@ func onMap(i int, j int, position [2]int) bool {
 func move(puzzle [][]string, position [2]int, direction [2]int) ([2]int, [2]int) {
 	pos := [2]int{}
 	if onMap(len(puzzle), len(puzzle[0]), [2]int{position[0] + direction[0], position[1] + direction[1]}) &&
-		puzzle[position[0]+direction[0]][position[1]+direction[1]] == "#" {
+		(puzzle[position[0]+direction[0]][position[1]+direction[1]] == "#" ||
+			puzzle[position[0]+direction[0]][position[1]+direction[1]] == "N") {
 		direction = changeDirection(direction)
 		pos = position
 	} else {
