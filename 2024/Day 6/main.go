@@ -9,7 +9,9 @@ import (
 func main() {
 	puzzle, position := readFile()
 	direction := [2]int{-1, 0}
+	positions := make([][2][2]int, 0)
 	moving := true
+	result2 := 0
 	puzzle[position[0]][position[1]] = "X"
 	for moving {
 		position, direction = move(puzzle, position, direction)
@@ -17,15 +19,12 @@ func main() {
 			moving = false
 		} else {
 			puzzle[position[0]][position[1]] = "X"
+			positions = append(positions, [2][2]int{position, direction})
 		}
+
 	}
-	/*for i := 0; i < len(puzzle); i++ {
-		for j := 0; j < len(puzzle); j++ {
-			fmt.Print(puzzle[i][j])
-		}
-		fmt.Print("\n")
-	}*/
 	fmt.Println(countPositions(puzzle))
+	fmt.Println(result2) // 823 too low
 }
 
 func countPositions(puzzle [][]string) int {
@@ -48,12 +47,15 @@ func onMap(i int, j int, position [2]int) bool {
 }
 
 func move(puzzle [][]string, position [2]int, direction [2]int) ([2]int, [2]int) {
-
-	for onMap(len(puzzle), len(puzzle[0]), [2]int{position[0] + direction[0], position[1] + direction[1]}) &&
+	pos := [2]int{}
+	if onMap(len(puzzle), len(puzzle[0]), [2]int{position[0] + direction[0], position[1] + direction[1]}) &&
 		puzzle[position[0]+direction[0]][position[1]+direction[1]] == "#" {
 		direction = changeDirection(direction)
+		pos = position
+	} else {
+		pos = [2]int{position[0] + direction[0], position[1] + direction[1]}
 	}
-	return [2]int{position[0] + direction[0], position[1] + direction[1]}, direction
+	return pos, direction
 }
 
 func changeDirection(direction [2]int) [2]int {
