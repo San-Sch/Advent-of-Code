@@ -17,7 +17,7 @@ func main() {
 		}
 	}
 	for _, val := range posMap {
-		for idxPos, _ := range val {
+		for idxPos := range val {
 			if idxPos < len(val)-1 {
 				for i := idxPos + 1; i < len(val); i++ {
 					setAntinodes(val[idxPos], val[i], puzzle)
@@ -25,6 +25,18 @@ func main() {
 			}
 		}
 	}
+	fmt.Println(countPositions(puzzle))
+
+	for _, val := range posMap {
+		for idxPos := range val {
+			if idxPos < len(val)-1 {
+				for i := idxPos + 1; i < len(val); i++ {
+					setAntinodes2(val[idxPos], val[i], puzzle)
+				}
+			}
+		}
+	}
+	//printPuzzle(puzzle)
 	fmt.Println(countPositions(puzzle))
 }
 
@@ -48,6 +60,28 @@ func setAntinodes(pos1 [2]int, pos2 [2]int, puzzle [][]string) {
 	}
 	if onMap(len(puzzle), len(puzzle[0]), posAntinode2) {
 		puzzle[posAntinode2[0]][posAntinode2[1]] = "#"
+	}
+}
+
+func setAntinodes2(pos1 [2]int, pos2 [2]int, puzzle [][]string) {
+	diffY := pos2[0] - pos1[0]
+	diffX := pos2[1] - pos1[1]
+	pos := pos1
+	pos[0] += diffY
+	pos[1] += diffX
+	puzzle[pos1[0]][pos1[1]] = "#"
+	for onMap(len(puzzle), len(puzzle[0]), pos) {
+		puzzle[pos[0]][pos[1]] = "#"
+		pos[0] += diffY
+		pos[1] += diffX
+	}
+	pos = pos1
+	pos[0] -= diffY
+	pos[1] -= diffX
+	for onMap(len(puzzle), len(puzzle[0]), pos) {
+		puzzle[pos[0]][pos[1]] = "#"
+		pos[0] -= diffY
+		pos[1] -= diffX
 	}
 }
 

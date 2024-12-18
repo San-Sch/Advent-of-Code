@@ -11,6 +11,7 @@ func main() {
 	puzzle, position := readFile()
 	direction := [2]int{-1, 0}
 	positions := make([][2][2]int, 0)
+	obstaclePositions := make([][2]int, 0)
 	moving := true
 	result2 := 0
 	puzzle[position[0]][position[1]] = "X"
@@ -25,24 +26,30 @@ func main() {
 
 	}
 	for _, pos := range positions {
-		if checkForLoop(pos) {
-			result2++
+		obstaclePosition := [2]int{pos[0][0] + pos[1][0], pos[0][1] + pos[1][1]}
+		if !slices.Contains(obstaclePositions, obstaclePosition) {
+			if checkForLoop(obstaclePosition, pos) {
+				obstaclePositions = append(obstaclePositions, obstaclePosition)
+				result2++
+				fmt.Println(result2)
+			}
 		}
 	}
 	fmt.Println(countPositions(puzzle))
 	fmt.Println(result2) //false
 }
 
-func checkForLoop(pos [2][2]int) bool {
+func checkForLoop(obstaclePos [2]int, pos [2][2]int) bool {
 	moving := true
-	puzzle, position := readFile()
-	position = pos[0]
+	puzzle, startPosition := readFile()
+	position := pos[0]
 	direction := pos[1]
-	if position[0]+direction[0] < 0 || position[0]+direction[0] >= len(puzzle) ||
-		position[1]+direction[1] < 0 || position[1]+direction[1] >= len(puzzle[0]) {
+	if obstaclePos[0] < 0 || obstaclePos[0] >= len(puzzle) ||
+		obstaclePos[1] < 0 || obstaclePos[1] >= len(puzzle[0]) ||
+		(obstaclePos[0] == startPosition[0] && obstaclePos[1] == startPosition[1]) {
 		return false
 	}
-	puzzle[position[0]+direction[0]][position[1]+direction[1]] = "N"
+	puzzle[obstaclePos[0]][obstaclePos[1]] = "N"
 	positions := make([][2][2]int, 0)
 	positions = append(positions, [2][2]int{position, direction})
 	direction = changeDirection(pos[1])
