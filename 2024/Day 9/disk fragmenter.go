@@ -109,5 +109,4 @@ func makeBlockFile(diskMap string) []string {
 func readFile() string {
 	data, _ := os.ReadFile("2024/Day 9/input")
 	return string(data)
-
 }
