@@ -1,16 +1,16 @@
-package main
+package day05
 
 import (
+	"Advent_of_Code_2024/utils"
 	"bufio"
 	"fmt"
-	"os"
 	"slices"
 	"strconv"
 	"strings"
 )
 
-func main() {
-	rules, updates := readFile()
+func Part1and2() {
+	rules, updates := getData(utils.ReadFile("./day05/input"))
 	result := 0
 	result2 := 0
 	for i := 0; i < len(updates); i++ {
@@ -23,7 +23,7 @@ func main() {
 		}
 	}
 	fmt.Println(result)
-	fmt.Println(result2) //4400 too low
+	fmt.Println(result2)
 }
 
 func sortUpdate(update []string, rules [][]string) []string {
@@ -61,10 +61,9 @@ func checkRules(update []string, rules [][]string) bool {
 	return true
 }
 
-func readFile() ([][]string, [][]string) {
+func getData(data string) ([][]string, [][]string) {
 	rules, updates := make([][]string, 0), make([][]string, 0)
-	file, _ := os.Open("2024/Day 5/input")
-	scanner := bufio.NewScanner(file)
+	scanner := bufio.NewScanner(strings.NewReader(data))
 	for scanner.Scan() && strings.Contains(scanner.Text(), "|") {
 		rules = append(rules, strings.Split(scanner.Text(), "|"))
 	}

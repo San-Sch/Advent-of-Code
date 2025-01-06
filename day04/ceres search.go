@@ -1,15 +1,13 @@
-package main
+package day04
 
 import (
-	"bufio"
+	"Advent_of_Code_2024/utils"
 	"fmt"
-	"os"
 )
 
-func main() {
-	puzzle := readFile()
+func Part1() {
+	puzzle := utils.CreatePuzzleMap(utils.ReadFile("./day04/input"))
 	result := 0
-	result2 := 0
 	var direction [2]int
 	for i := 0; i < len(puzzle); i++ {
 		for j := 0; j < len(puzzle[0]); j++ {
@@ -27,26 +25,34 @@ func main() {
 					}
 				}
 			}
+		}
+	}
+	fmt.Println(result)
+}
+
+func Part2() {
+	puzzle := utils.CreatePuzzleMap(utils.ReadFile("./day04/input"))
+	result := 0
+	for i := 0; i < len(puzzle); i++ {
+		for j := 0; j < len(puzzle[0]); j++ {
 			// Part 2
 			if puzzle[i][j] == "M" && i+2 < len(puzzle) && j+2 < len(puzzle[i]) {
 				if puzzle[i+1][j+1] == "A" && puzzle[i+2][j+2] == "S" {
 					if checkCross(puzzle, i, j) {
-						result2++
+						result++
 					}
 				}
 			}
 			if puzzle[i][j] == "S" && i+2 < len(puzzle) && j+2 < len(puzzle[i]) {
 				if puzzle[i+1][j+1] == "A" && puzzle[i+2][j+2] == "M" {
 					if checkCross(puzzle, i, j) {
-						result2++
+						result++
 					}
 				}
 			}
 		}
 	}
 	fmt.Println(result)
-	fmt.Println(result2)
-
 }
 
 func checkCross(puzzle [][]string, i int, j int) bool {
@@ -77,21 +83,4 @@ func find(puzzle [][]string, letter string, x int, y int, direction [2]int) bool
 		}
 	}
 	return false
-}
-
-func readFile() [][]string {
-	file, _ := os.Open("2024/Day 4/input")
-	scanner := bufio.NewScanner(file)
-	lines := make([]string, 0)
-	puzzle := make([][]string, 0)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-	for i := 0; i < len(lines); i++ {
-		puzzle = append(puzzle, make([]string, 0))
-		for j := 0; j < len(lines[i]); j++ {
-			puzzle[i] = append(puzzle[i], lines[i][j:j+1])
-		}
-	}
-	return puzzle
 }

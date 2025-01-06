@@ -1,14 +1,14 @@
-package main
+package day12
 
 import (
-	"bufio"
+	"Advent_of_Code_2024/utils"
 	"fmt"
-	"os"
 	"strconv"
 )
 
-func main() {
-	puzzle := readFile()
+func Part1and2() {
+	//puzzle := readFile()
+	puzzle := utils.CreatePuzzleMap(utils.ReadFile("./day12/input"))
 	areas := make(map[string]bool)
 	areaPlots := make(map[string][]int)
 	areaSides := make(map[string]int)
@@ -127,31 +127,4 @@ func onMap(i int, j int, position [2]int) bool {
 		return false
 	}
 	return true
-}
-
-func printPuzzle(puzzle [][]string) {
-	for i := 0; i < len(puzzle); i++ {
-		for j := 0; j < len(puzzle); j++ {
-			fmt.Print(puzzle[i][j])
-		}
-		fmt.Print("\n")
-	}
-	fmt.Println()
-}
-
-func readFile() [][]string {
-	file, _ := os.Open("2024/Day 12/input")
-	scanner := bufio.NewScanner(file)
-	lines := make([]string, 0)
-	puzzle := make([][]string, 0)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-	for i := 0; i < len(lines); i++ {
-		puzzle = append(puzzle, make([]string, 0))
-		for j := 0; j < len(lines[i]); j++ {
-			puzzle[i] = append(puzzle[i], lines[i][j:j+1])
-		}
-	}
-	return puzzle
 }

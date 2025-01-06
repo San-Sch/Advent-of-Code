@@ -1,15 +1,15 @@
-package main
+package day02
 
 import (
-	"bufio"
+	"Advent_of_Code_2024/utils"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 )
 
-func main() {
-	lines := ReadFile()
+func Part1and2() {
+	data := utils.ReadFile("./day02/input")
+	lines := strings.Split(data, "\n")
 	var safeReports int = 0
 	var safeReports2 int = 0
 	var safe bool
@@ -25,13 +25,13 @@ func main() {
 			safeReports2++
 		} else {
 			copy(tmpReport, report)
-			tmpReport = RemoveIndex(tmpReport, index1)
+			tmpReport = removeIndex(tmpReport, index1)
 			safe, _, _ = checkReport(tmpReport)
 			if safe {
 				safeReports2++
 			} else {
 				copy(tmpReport2, report)
-				tmpReport2 = RemoveIndex(tmpReport2, index2)
+				tmpReport2 = removeIndex(tmpReport2, index2)
 				safe, _, _ = checkReport(tmpReport2)
 				if safe {
 					safeReports2++
@@ -44,7 +44,7 @@ func main() {
 	fmt.Println(safeReports2)
 }
 
-func RemoveIndex(s []string, index int) []string {
+func removeIndex(s []string, index int) []string {
 	if len(s)-1 == index {
 		return append(s[:index])
 	} else {
@@ -60,7 +60,7 @@ func checkReport(report []string) (bool, int, int) {
 			return false, i - 1, i
 		} else if i == 0 {
 			lastLevel = level
-		} else if diff(lastLevel, level) < 0 || diff(lastLevel, level) > 3 {
+		} else if utils.Diff(lastLevel, level) < 0 || utils.Diff(lastLevel, level) > 3 {
 			return false, i - 1, i
 		} else {
 			switch true {
@@ -76,21 +76,4 @@ func checkReport(report []string) (bool, int, int) {
 		lastLevel = level
 	}
 	return true, 0, 0
-}
-
-func diff(a, b int) int {
-	if a < b {
-		return b - a
-	}
-	return a - b
-}
-
-func ReadFile() []string {
-	file, _ := os.Open("2024/2/input")
-	scanner := bufio.NewScanner(file)
-	lines := make([]string, 0)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-	return lines
 }

@@ -1,15 +1,15 @@
-package main
+package day03
 
 import (
+	"Advent_of_Code_2024/utils"
 	"fmt"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
 )
 
-func main() {
-	str := readFile()
+func Part1() {
+	str := utils.ReadFile("./day03/input")
 	re := regexp.MustCompile(`mul\(\d{1,3},\d{1,3}\)`)
 	re2 := regexp.MustCompile(`\d{1,3}`)
 	mul := re.FindAllString(str, -1)
@@ -21,9 +21,14 @@ func main() {
 		result += num1 * num2
 	}
 	fmt.Println(result)
+}
 
-	//Part 2
-	result = 0
+func Part2() {
+	str := utils.ReadFile("./day03/input")
+	re := regexp.MustCompile(`mul\(\d{1,3},\d{1,3}\)`)
+	re2 := regexp.MustCompile(`\d{1,3}`)
+	mul := re.FindAllString(str, -1)
+	result := 0
 	runLoop := true
 	for runLoop {
 		indexDont := strings.Index(str, "don't()")
@@ -48,10 +53,4 @@ func main() {
 		}
 	}
 	fmt.Println(result)
-}
-
-func readFile() string {
-	data, _ := os.ReadFile("2024/Day 3/input")
-	return string(data)
-
 }
