@@ -14,13 +14,8 @@ type node struct {
 	val int
 }
 
-type path struct {
-	n []node
-	v []node
-}
-
 func Part1() {
-	data := utils.ReadFile("./day16/input")
+	data := utils.ReadFile("./day16/test1")
 	puzzleMap := utils.CreatePuzzleMap(data)
 	nodes, finish := prepareMapData(puzzleMap)
 	vNodes := make([]node, 0)
@@ -33,11 +28,11 @@ func Part1() {
 
 	}
 	fmt.Println(nodes[0].val)
+	//fmt.Println(vNodes)
 }
 
 func findNode(nodes []node, c utils.Coordinate) int {
 	return slices.IndexFunc(nodes, func(node node) bool {
-
 		return node.c == c
 	})
 }

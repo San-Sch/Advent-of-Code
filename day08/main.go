@@ -1,4 +1,4 @@
-package main
+package day08
 
 import (
 	"bufio"
@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func main() {
+func Part1() {
 	puzzle := readFile()
 	posMap := make(map[string][][2]int)
 	for i := 0; i < len(puzzle); i++ {
@@ -38,6 +38,10 @@ func main() {
 	}
 	//printPuzzle(puzzle)
 	fmt.Println(countPositions(puzzle))
+}
+
+func Part2() {
+
 }
 
 func countPositions(puzzle [][]string) int {

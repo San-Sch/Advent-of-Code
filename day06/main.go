@@ -75,16 +75,6 @@ func checkForLoop(obstaclePos [2]int, pos [2][2]int) bool {
 	return false
 }
 
-func printPuzzle(puzzle [][]string) {
-	for i := 0; i < len(puzzle); i++ {
-		for j := 0; j < len(puzzle); j++ {
-			fmt.Print(puzzle[i][j])
-		}
-		fmt.Print("\n")
-	}
-	fmt.Println()
-}
-
 func countPositions(puzzle [][]string) int {
 	count := 0
 	for i := 0; i < len(puzzle); i++ {
